@@ -16,7 +16,7 @@ export class Carousel extends Component {
     super();
 
     this.state = {
-      items: Array.from({ length: 8 }).map((_, idx) => idx),
+      items: Array.from({ length: 10 }).map((_, idx) => idx),
       selectedIndex: 0
     };
 
@@ -46,16 +46,18 @@ export class Carousel extends Component {
       return { selectedIndex: selectedIndex + 1 };
     });
   };
+  
+  onClickToAdvance = (e) => {
+    const idx = this.elements.slides.map(ref => ref.current).indexOf(e.currentTarget);
+    this.setState(({ selectedIndex }) => {
+      if (selectedIndex === idx) return;
+      return { selectedIndex: idx };
+    });
+  };
 
   componentDidUpdate(_, prevState) {
     if (this.state.selectedIndex !== prevState.selectedIndex) {
-      // const dir = this.state.selectedIndex > prevState.selectedIndex ? 1 : -1;
-      anime({
-        targets: this.elements.slides.map(({ current }) => current),
-        // translateX: `${dir > 0 ? "-" : "+"}=${getTransformX()}`,
-        translateX: (getTransformX() * this.state.selectedIndex) * -1,
-        easing: "easeOutExpo"
-      });
+      animateSlideChange(this.elements, this.state.selectedIndex)
     }
   }
 
@@ -89,6 +91,7 @@ export class Carousel extends Component {
                 key={item}
                 ref={this.elements.slides[idx]}
                 className={styles.card}
+                onClick={this.onClickToAdvance}
               >
                 {item}
               </li>
@@ -122,6 +125,24 @@ function animateCarouselIntro({ slides }, complete) {
       translateY: [100, 0],
       delay: anime.stagger(80)
     });
+}
+
+function animateSlideChange({ slides }, idx){
+  const active = slides.slice(idx, idx + 1)
+  const rest = slides.slice(0, idx).concat(slides.slice(idx + 1))
+  const shared = { easing: "easeOutExpo", translateX: (getTransformX() * idx) * -1 }
+  anime({
+    ...shared,
+    targets: active.map(({ current }) => current),
+    translateY: -24, 
+  });
+  anime({
+    ...shared,
+    targets: rest.map(({ current }) => current),
+    // the reveal stagger can be interrupted and 
+    // gets stuck at non-zero if this is omitted
+    translateY: 0, 
+  });
 }
 
 export default Carousel;
