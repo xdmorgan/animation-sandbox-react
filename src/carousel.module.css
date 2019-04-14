@@ -1,0 +1,50 @@
+.container {
+  display: grid;
+  min-height: 80vh;
+  margin: 200px 0;
+  grid-template-rows: auto 1fr;
+  background: #efefef;
+  padding: 24px 0;
+}
+
+.nav {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0 24px;
+}
+
+.carousel {
+  display: flex;
+  height: 100%;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+  position: relative;
+}
+
+.overflow {
+  padding: 24px 0;
+  overflow: hidden;
+}
+
+.card {
+  /* Use flex layout on mount to fit content then hardcode 
+    and convert to absolute layout */
+  flex: 0 0 auto;
+  width: 300px;
+  margin: 0 0 0 24px;
+  /* required when switching to absolute layout; */
+  position: relative;
+  height: 100%;
+  left: 0;
+  top: 0;
+  /* start at 0 opacity and intro when carousel mounts */
+  opacity: 0;
+  /* theme */
+  padding: 24px;
+  background: white;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  box-shadow: 0 4px 4px rgba(0, 0, 0, 0.05);
+}
