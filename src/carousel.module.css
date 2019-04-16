@@ -3,7 +3,7 @@
   min-height: 80vh;
   margin: 200px 0;
   grid-template-rows: auto 1fr;
-  background: #efefef;
+  background: #fff;
   padding: 24px 0;
 }
 
@@ -17,10 +17,34 @@
 .carousel {
   display: flex;
   height: 100%;
-  margin: 0;
+  max-width: 1440px;
+  margin: 0 auto;
   padding: 0;
   list-style: none;
   position: relative;
+}
+
+.carousel::before,
+.carousel::after {
+  z-index: 1;
+  content: "";
+  position: absolute;
+  left: 300px;
+  top: -24px;
+  height: calc(100% + 24px);
+  /* opacity: 0; */
+}
+
+.carousel::before {
+  width: 116px;
+  background: linear-gradient(90deg, rgba(255,255,255,1) 0%, rgba(255,255,255,0) 100%);
+}
+
+.carousel::after {
+  width: 100vw;
+  background: #fff;
+  transform: translateX(-100%);
+  height: calc(100% + 32px);
 }
 
 .overflow {
@@ -43,8 +67,8 @@
   opacity: 0;
   /* theme */
   padding: 24px;
-  background: white;
-  border: 1px solid #ccc;
+  background: #fff;
+  border: 1px solid #ddd;
   border-radius: 4px;
-  box-shadow: 0 4px 4px rgba(0, 0, 0, 0.05);
+  box-shadow: 0 4px 4px rgba(0, 0, 0, 0.075);
 }

@@ -3,7 +3,7 @@ import styles from "./carousel.module.css";
 import anime from "animejs";
 
 const [CARD_WIDTH, CARD_GAP] = [300, 24];
-const [STACK_GAP, STACK_RANGE_X, STACK_RANGE_Y] = [240, 20, 20];
+const [STACK_GAP, STACK_RANGE_X, STACK_RANGE_Y] = [200, 20, 20];
 
 const getTransformX = () => CARD_WIDTH + CARD_GAP;
 const getSlideX = n => n * getTransformX();
@@ -106,9 +106,12 @@ export class Carousel extends Component {
 function convertToAbsoluteLayout({ container, slides }) {
   const containerRect = container.current.getBoundingClientRect();
   container.current.style.height = containerRect.height + 'px';
+  // leave room for stack in absolutely positioned cards
+  const offset = getSelectedOffsetX(); 
   slides.forEach((slide, idx) => {
     slide.current.style.position = 'absolute'
-    slide.current.style.left = getSlideX(idx) + 'px'
+    slide.current.style.left = (offset + getSlideX(idx)) + 'px'
+    slide.current.style.marginLeft = 0
   })
 }
 
@@ -128,17 +131,29 @@ function animateCarouselIntro({ slides }, complete) {
 }
 
 function animateSlideChange({ slides }, idx){
+  const before = slides.slice(0, idx)
   const active = slides.slice(idx, idx + 1)
-  const rest = slides.slice(0, idx).concat(slides.slice(idx + 1))
-  const shared = { easing: "easeOutExpo", translateX: (getTransformX() * idx) * -1 }
+  const after = slides.slice(idx + 1)
+  const easing = "easeOutExpo"
+  const translateX = getSlideX(idx) * -1;
+  before.forEach( ({ current }, bIdx) => {
+    anime({
+      easing,
+      translateX: translateX - getSelectedOffsetX() + getTransformX(),
+      targets: current,
+      translateY: 0, 
+    })
+  })
   anime({
-    ...shared,
+    easing,
+    translateX,
     targets: active.map(({ current }) => current),
     translateY: -24, 
   });
   anime({
-    ...shared,
-    targets: rest.map(({ current }) => current),
+    easing,
+    translateX,
+    targets: after.map(({ current }) => current),
     // the reveal stagger can be interrupted and 
     // gets stuck at non-zero if this is omitted
     translateY: 0, 
