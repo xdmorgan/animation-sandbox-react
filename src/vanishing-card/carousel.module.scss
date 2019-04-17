@@ -1,7 +1,14 @@
+$carousel-max-width: 1440px;
+$carousel-color-bg: #efefef;
+
+$card-width: 300px;
+$card-gap: 24px;
+$card-active-y-offset: 24px;
+
+$debug-card-fade-opacity: 0;
+
 .container {
   display: grid;
-  min-height: 80vh;
-  margin: 200px 0;
   grid-template-rows: auto 1fr;
   background: #fff;
   padding: 24px 0;
@@ -17,7 +24,7 @@
 .carousel {
   display: flex;
   height: 100%;
-  max-width: 1440px;
+  max-width: $carousel-max-width;
   margin: 0 auto;
   padding: 0;
   list-style: none;
@@ -29,10 +36,10 @@
   z-index: 1;
   content: "";
   position: absolute;
-  left: 300px;
-  top: -24px;
-  height: calc(100% + 24px);
-  /* opacity: 0; */
+  left: $card-width;
+  top: -$card-active-y-offset;
+  height: calc(100% + ($card-active-y-offset * 2));
+  opacity: $debug-card-fade-opacity;
 }
 
 .carousel::before {
@@ -44,11 +51,10 @@
   width: 100vw;
   background: #fff;
   transform: translateX(-100%);
-  height: calc(100% + 32px);
 }
 
 .overflow {
-  padding: 24px 0;
+  padding: $card-active-y-offset 0;
   overflow: hidden;
 }
 
@@ -56,8 +62,8 @@
   /* Use flex layout on mount to fit content then hardcode 
     and convert to absolute layout */
   flex: 0 0 auto;
-  width: 300px;
-  margin: 0 0 0 24px;
+  width: $card-width;
+  margin: 0 0 0 $card-gap;
   /* required when switching to absolute layout; */
   position: relative;
   height: 100%;

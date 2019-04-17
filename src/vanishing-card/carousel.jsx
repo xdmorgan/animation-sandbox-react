@@ -1,9 +1,9 @@
 import React, { Component } from "react";
-import styles from "./carousel.module.css";
+import styles from "./carousel.module.scss";
 import anime from "animejs";
 
-const [CARD_WIDTH, CARD_GAP] = [300, 24];
-const [STACK_GAP] = [200];
+const [CARD_WIDTH, CARD_GAP, STACK_GAP] = [300, 24, 200];
+const LOREM_IPSUM = getLorems();
 
 const getTransformX = () => CARD_WIDTH + CARD_GAP;
 const getSlideX = n => n * getTransformX();
@@ -14,7 +14,9 @@ export class Carousel extends Component {
     super();
 
     this.state = {
-      items: Array.from({ length: 10 }).map((_, idx) => idx),
+      items: Array.from({ length: 10 }).map(
+        (_, idx) => idx + " " + LOREM_IPSUM[idx % LOREM_IPSUM.length]
+      ),
       selectedIndex: 0
     };
 
@@ -44,9 +46,11 @@ export class Carousel extends Component {
       return { selectedIndex: selectedIndex + 1 };
     });
   };
-  
-  onClickToAdvance = (e) => {
-    const idx = this.elements.slides.map(ref => ref.current).indexOf(e.currentTarget);
+
+  onClickToAdvance = e => {
+    const idx = this.elements.slides
+      .map(ref => ref.current)
+      .indexOf(e.currentTarget);
     this.setState(({ selectedIndex }) => {
       if (selectedIndex === idx) return;
       return { selectedIndex: idx };
@@ -55,7 +59,7 @@ export class Carousel extends Component {
 
   componentDidUpdate(_, prevState) {
     if (this.state.selectedIndex !== prevState.selectedIndex) {
-      animateSlideChange(this.elements, this.state.selectedIndex)
+      animateSlideChange(this.elements, this.state.selectedIndex);
     }
   }
 
@@ -103,14 +107,14 @@ export class Carousel extends Component {
 
 function convertToAbsoluteLayout({ container, slides }) {
   const containerRect = container.current.getBoundingClientRect();
-  container.current.style.height = containerRect.height + 'px';
+  container.current.style.height = containerRect.height + "px";
   // leave room for stack in absolutely positioned cards
-  const offset = getSelectedOffsetX(); 
+  const offset = getSelectedOffsetX();
   slides.forEach((slide, idx) => {
-    slide.current.style.position = 'absolute'
-    slide.current.style.left = (offset + getSlideX(idx)) + 'px'
-    slide.current.style.marginLeft = 0
-  })
+    slide.current.style.position = "absolute";
+    slide.current.style.left = offset + getSlideX(idx) + "px";
+    slide.current.style.marginLeft = 0;
+  });
 }
 
 function animateCarouselIntro({ slides }, complete) {
@@ -128,34 +132,63 @@ function animateCarouselIntro({ slides }, complete) {
     });
 }
 
-function animateSlideChange({ slides }, idx){
-  const before = slides.slice(0, idx)
-  const active = slides.slice(idx, idx + 1)
-  const after = slides.slice(idx + 1)
-  const easing = "easeOutExpo"
+function animateSlideChange({ slides }, idx) {
+  const before = slides.slice(0, idx);
+  const active = slides.slice(idx, idx + 1);
+  const after = slides.slice(idx + 1);
+  const easing = "easeOutExpo";
   const translateX = getSlideX(idx) * -1;
-  before.forEach( ({ current }, bIdx) => {
+  before.forEach(({ current }, bIdx) => {
     anime({
       easing,
       translateX: translateX - getSelectedOffsetX() + getTransformX(),
       targets: current,
-      translateY: 0, 
-    })
-  })
+      translateY: 0
+    });
+  });
   anime({
     easing,
     translateX,
     targets: active.map(({ current }) => current),
-    translateY: -24, 
+    translateY: -24
   });
   anime({
     easing,
     translateX,
     targets: after.map(({ current }) => current),
-    // the reveal stagger can be interrupted and 
+    // the reveal stagger can be interrupted and
     // gets stuck at non-zero if this is omitted
-    translateY: 0, 
+    translateY: 0
   });
+}
+
+function getLorems() {
+  return [
+    [
+      "Lorem ipsum dolor sit amet consectetur adipisicing elit. Quo iusto",
+      "ipsum ratione deleniti amet facilis animi nemo impedit placeat, ab",
+      "obcaecati magnam explicabo aperiam veniam magni accusantium non",
+      "tempora enim? Deserunt veniam fugit, eaque, voluptatum ipsum"
+    ].join(" "),
+    [
+      "Lorem ipsum, dolor sit amet consectetur adipisicing elit. Consectetur",
+      "quia eligendi modi debitis error, reiciendis itaque totam sit saepe",
+      "dignissimos rerum porro"
+    ].join(" "),
+    [
+      "Lorem, ipsum dolor sit amet consectetur adipisicing elit. Fugit dolore",
+      "impedit eveniet molestiae quia inventore, consectetur obcaecati, non",
+      "obcaecati magnam explicabo aperiam veniam magni accusantium non",
+      "iste quod ullam? Necessitatibus ut, molestiae quia inventore,",
+      "consectetur obcaecati natus velit in non ex eligendi repellendus?"
+    ].join(" "),
+    [
+      "Lorem ipsum dolor sit amet consectetur, adipisicing elit. Ut",
+      "dignissimos est impedit totam minima deleniti rerum voluptatibus eum",
+      "corrupti. Quia facilis sapiente at quaerat impedit repellendus in,",
+      "adipisci culpa eos?"
+    ].join(" ")
+  ];
 }
 
 export default Carousel;

@@ -1,6 +1,7 @@
 import React from "react";
 import { BrowserRouter as Router, Route, Link } from "react-router-dom";
-import { Carousel } from './carousel'
+import VanishingCard from './vanishing-card'
+import DraggableSlider from './draggable-slider'
 
 function App() {
   return (
@@ -15,6 +16,8 @@ function App() {
         <hr />
 
         <Route exact path="/" component={Home} />
+        <Route exact path="/vanishing-card" component={VanishingCard} />
+        <Route exact path="/draggable-slider" component={DraggableSlider} />
       </div>
     </Router>
   );
@@ -23,8 +26,11 @@ function App() {
 function Home() {
   return (
     <div>
-      <h2>Home</h2>
-      <Carousel />
+      <h2>Contents</h2>
+      <ul>
+        <li><Link to="/vanishing-card">Vanishing Card Carousel</Link></li>
+        <li><Link to="/draggable-slider">Draggable Slider</Link></li>
+      </ul>
     </div>
   );
 }
