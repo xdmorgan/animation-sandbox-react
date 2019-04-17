@@ -38,7 +38,7 @@ $debug-card-fade-opacity: 1;
   position: absolute;
   left: $card-width;
   top: -$card-active-y-offset;
-  height: calc(100% + ($card-active-y-offset * 2));
+  height: calc(100% + (#{$card-active-y-offset} * 2));
   opacity: $debug-card-fade-opacity;
 }
 
