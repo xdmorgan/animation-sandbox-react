@@ -3,13 +3,11 @@ import styles from "./carousel.module.css";
 import anime from "animejs";
 
 const [CARD_WIDTH, CARD_GAP] = [300, 24];
-const [STACK_GAP, STACK_RANGE_X, STACK_RANGE_Y] = [200, 20, 20];
+const [STACK_GAP] = [200];
 
 const getTransformX = () => CARD_WIDTH + CARD_GAP;
 const getSlideX = n => n * getTransformX();
 const getSelectedOffsetX = () => CARD_WIDTH + STACK_GAP;
-const getStackX = (rand = Math.random) => rand() * STACK_RANGE_X;
-const getStackY = (rand = Math.random) => rand() * STACK_RANGE_Y;
 
 export class Carousel extends Component {
   constructor() {
