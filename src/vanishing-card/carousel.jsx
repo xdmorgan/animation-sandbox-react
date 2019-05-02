@@ -22,9 +22,7 @@ export class Carousel extends Component {
 
     this.elements = {
       container: React.createRef(),
-      slides: Array.from({ length: this.state.items.length }).map(() =>
-        React.createRef()
-      )
+      slides: this.state.items.map(() => React.createRef())
     };
   }
 
