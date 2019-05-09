@@ -1,0 +1,84 @@
+
+$gap : 24px;
+
+.container {
+  background: #111;
+}
+
+.list {
+  margin: 0;
+  padding: $gap;
+  list-style: none;
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  grid-template-rows: auto;
+  grid-auto-rows: auto;
+  grid-row-gap: $gap;
+  grid-column-gap: $gap;
+
+  .item:nth-child(2n + 2) {
+    transition-delay: 50ms;
+  }
+
+  $lol: (
+    three: (
+      break: 768px,
+      columns: 3,
+    ),
+    four: (
+      break: 1024px,
+      columns: 4,
+    ),
+    five: (
+      break: 1280px,
+      columns: 5,
+    ),
+    six: (
+      break: 1440px,
+      columns: 6,
+    )
+  );
+
+  @each $key, $val in $lol {
+    $break: map-get($val, break);
+    $cols : map-get($val, columns);
+    $delay: 50ms;
+    // $delay: map-get($val, delay);
+    @media screen and (min-width: $break){
+      grid-template-columns: repeat($cols, 1fr);
+      @for $i from 0 through $cols - 1 {
+        .item:nth-child(#{$cols}n + #{$i + 1}) {
+          transition-delay: $i * $delay;
+        }
+      }
+    }
+  }
+  
+}
+
+.item {
+  margin: 0;
+  padding: 12px 24px;
+  height: 200px;
+  background-color: #eee;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  transition: all 400ms ease;
+  transform-origin: bottom center;
+
+
+
+  @for $i from 1 through 255 {
+    &:nth-child(#{$i}){
+      background-color: hsla($i, 100%, 50%, 1);
+    }
+  }
+}
+
+.offscreen {
+  transform: translate3d(0, 48px, 0) scale(0.9) rotate(0);
+  opacity: 0;
+}
+
