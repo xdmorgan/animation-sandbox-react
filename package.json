@@ -11,7 +11,7 @@
     "react-dom": "^16.8.6",
     "react-intersection-observer": "^8.23.0",
     "react-router-dom": "^5.0.0",
-    "react-scripts": "2.1.8",
+    "react-scripts": "3.0.1",
     "react-spring": "^8.0.19",
     "react-transition-group": "^2.8.0",
     "react-with-gesture": "^4.0.8",
