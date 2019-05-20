@@ -32,7 +32,7 @@ function Home() {
       <ul>
         <li><Link to="/vanishing-card">Vanishing Card Carousel</Link></li>
         <li><Link to="/draggable-slider">Draggable Slider</Link></li>
-        <li><Link to="/scroll-reveal">Sroll Reveal</Link></li>
+        <li><Link to="/scroll-reveal">Scroll Reveal</Link></li>
       </ul>
     </div>
   );
