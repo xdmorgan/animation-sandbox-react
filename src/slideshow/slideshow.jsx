@@ -2,10 +2,10 @@ import React from 'react'
 // import cx from 'classnames';
 // import styles from './slideshow.module.scss';
 
-export function Slideshow() {
+export function Slideshow({ images }) {
     return (
         <div>
-            Hello Slideshow
+            { images.map(img => <img src={img} alt="test" /> ) }
         </div>
     )
 }
