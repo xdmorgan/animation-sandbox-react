@@ -20,14 +20,15 @@ export default function View() {
       <Header />
       <div>
         <Slideshow
-          images={[
-            "https://source.unsplash.com/random?0",
-            "https://source.unsplash.com/random?1",
-            "https://source.unsplash.com/random?2",
-            "https://source.unsplash.com/random?3",
-            "https://source.unsplash.com/random?4",
-            "https://source.unsplash.com/random?5"
-          ]} />
+          displacement="/assets/slideshow/displacement.jpg"
+          sources={[
+            "/assets/slideshow/1.jpg",
+            "/assets/slideshow/2.jpg",
+            "/assets/slideshow/3.jpg",
+            "/assets/slideshow/4.jpg",
+            "/assets/slideshow/5.jpg"
+          ]} 
+        />
       </div>
     </div>
   );
